@@ -1,0 +1,4 @@
+repos:
+- id: /.*/
+  plan_requirements: [undiverged]
+  apply_requirements: [undiverged]
