@@ -2,3 +2,5 @@ repos:
 - id: /.*/
   plan_requirements: [undiverged]
   apply_requirements: [undiverged]
+  import_requirements: [undiverged]
+  allowed_overrides: [plan_requirements, apply_requirements, import_requirements]
