@@ -10,7 +10,7 @@
 <details><summary>Plan結果</summary>
 
 ```diff
-aws_sns_topic.test-1: Refreshing state... [id=arn:aws:sns:ap-northeast-1:083636136646:topic-test-1]
+aws_sns_topic.test-1: Refreshing state... [id=arn:aws:sns:ap-northeast-1:xxxxxxxxxxxxxx:topic-test-1]
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
@@ -22,15 +22,15 @@ Terraform will perform the following actions:
   # aws_sns_topic.test-1 must be replaced
 -/+ resource "aws_sns_topic" "test-1" {
       - application_success_feedback_sample_rate = 0 -> null
-      ~ arn                                      = "arn:aws:sns:ap-northeast-1:083636136646:topic-test-1" -> (known after apply)
+      ~ arn                                      = "arn:aws:sns:ap-northeast-1:xxxxxxxxxxxxxx:topic-test-1" -> (known after apply)
       + beginning_archive_time                   = (known after apply)
       - firehose_success_feedback_sample_rate    = 0 -> null
       - http_success_feedback_sample_rate        = 0 -> null
-      ~ id                                       = "arn:aws:sns:ap-northeast-1:083636136646:topic-test-1" -> (known after apply)
+      ~ id                                       = "arn:aws:sns:ap-northeast-1:xxxxxxxxxxxxxx:topic-test-1" -> (known after apply)
       - lambda_success_feedback_sample_rate      = 0 -> null
       ~ name                                     = "topic-test-1" -> "topic-test-2" # forces replacement
       + name_prefix                              = (known after apply)
-      ~ owner                                    = "083636136646" -> (known after apply)
+      ~ owner                                    = "xxxxxxxxxxxxxx" -> (known after apply)
       ~ policy                                   = jsonencode(
             {
               - Id        = "__default_policy_ID"
@@ -48,14 +48,14 @@ Terraform will perform the following actions:
                         ]
                       - Condition = {
                           - StringEquals = {
-                              - "AWS:SourceOwner" = "083636136646"
+                              - "AWS:SourceOwner" = "xxxxxxxxxxxxxx"
                             }
                         }
                       - Effect    = "Allow"
                       - Principal = {
                           - AWS = "*"
                         }
-                      - Resource  = "arn:aws:sns:ap-northeast-1:083636136646:topic-test-1"
+                      - Resource  = "arn:aws:sns:ap-northeast-1:xxxxxxxxxxxxxx:topic-test-1"
                       - Sid       = "__default_statement_ID"
                     },
                 ]
@@ -104,7 +104,7 @@ Plan: 2 to add, 0 to change, 1 to destroy.
 <details><summary>Plan結果</summary>
 
 ```diff
-aws_sns_topic.test-1: Refreshing state... [id=arn:aws:sns:ap-northeast-1:083636136646:topic-test-1]
+aws_sns_topic.test-1: Refreshing state... [id=arn:aws:sns:ap-northeast-1:xxxxxxxxxxxxxx:topic-test-1]
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
