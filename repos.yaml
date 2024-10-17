@@ -1,6 +1,40 @@
 repos:
 - id: /.*/
-  plan_requirements: [undiverged]
-  apply_requirements: [undiverged]
-  import_requirements: [undiverged]
-  allowed_overrides: [plan_requirements, apply_requirements, import_requirements]
+  workflow: default
+  allowed_overrides: [workflow]
+  allow_custom_workflows: true
+  pre_workflow_hooks:
+    - run: |
+        /tmp/jq --version || (curl -sL "https://github.com/stedolan/jq/releases/download/jq-1.7.1/jq-linux64" -o /tmp/jq && \
+        chmod +x /tmp/jq && \
+        /tmp/jq --version)
+workflows:
+  default:
+    plan:
+      steps:
+        # pwd: /home/atlantis/.atlantis/repos/tatsukoni-pra/atlantis-demo/9/default/aws/demo
+        - run: |
+            base_sha=$(curl -sS https://api.github.com/repos/tatsukoni-pra/atlantis-demo/branches/main -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $ATLANTIS_GH_TOKEN" | /tmp/jq -r .commit.sha)
+            head_sha="$HEAD_COMMIT"
+            echo "base_sha: $base_sha"
+            echo "head_sha: $head_sha"
+            behind_by=$(curl -sS https://api.github.com/repos/tatsukoni-pra/atlantis-demo/compare/$base_sha...$head_sha -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $ATLANTIS_GH_TOKEN" | /tmp/jq -r .behind_by)
+            echo "behind_by: $behind_by"
+            if [ "$behind_by" -ne 0 ]; then
+              echo "PR is not up to date with base branch. Please update your branch."
+              exit 1
+            fi
+        - init
+        - plan
+    apply:
+      steps:
+        # pwd: /home/atlantis/.atlantis/repos/tatsukoni-pra/atlantis-demo/9/default/aws/demo
+        - run: |
+            base_sha=$(curl -sS https://api.github.com/repos/tatsukoni-pra/atlantis-demo/branches/main -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $ATLANTIS_GH_TOKEN" | /tmp/jq -r .commit.sha)
+            head_sha=$HEAD_COMMIT
+            behind_by=$(curl -sS https://api.github.com/repos/tatsukoni-pra/atlantis-demo/compare/$base_sha...$head_sha -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $ATLANTIS_GH_TOKEN" | /tmp/jq -r .behind_by)
+            if [ "$behind_by" -ne 0 ]; then
+              echo "PR is not up to date with base branch. Please update your branch."
+              exit 1
+            fi
+        - apply
