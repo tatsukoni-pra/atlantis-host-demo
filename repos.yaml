@@ -16,10 +16,7 @@ workflows:
         - run: |
             base_sha=$(curl -sS https://api.github.com/repos/tatsukoni-pra/atlantis-demo/branches/main -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $ATLANTIS_GH_TOKEN" | /tmp/jq -r .commit.sha)
             head_sha="$HEAD_COMMIT"
-            echo "base_sha: $base_sha"
-            echo "head_sha: $head_sha"
             behind_by=$(curl -sS https://api.github.com/repos/tatsukoni-pra/atlantis-demo/compare/$base_sha...$head_sha -H "Accept: application/vnd.github.v3+json" -H "Authorization: token $ATLANTIS_GH_TOKEN" | /tmp/jq -r .behind_by)
-            echo "behind_by: $behind_by"
             if [ "$behind_by" -ne 0 ]; then
               echo "PR is not up to date with base branch. Please update your branch."
               exit 1
